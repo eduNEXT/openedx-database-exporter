@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from tools import *
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Courses with enrroled students + ...
 
@@ -15,7 +18,7 @@ def get_courses_with_enrolled_students(cnx, org_list):
                                (regex,)
                               )
 
-    print "    CE: There are {} courses with enrolled students from this orgs:{}".format(len(query_result), org_list)
+    logger.debug("    CE: There are {} courses with enrolled students from this orgs:{}".format(len(query_result), org_list))
     return query_result
 
 
@@ -26,5 +29,5 @@ def get_courses_list(cnx, site, org_list):
     # EnS = get_empty_users_recoverable(cnx, site)
     courses_from_enrolment = get_courses_with_enrolled_students(cnx, org_list)
     courses_list = courses_from_enrolment #+ ..
-    print "courses: There are {} courses for {} with orgs:{}".format(len(courses_list), site, org_list)
+    logger.debug("courses: There are {} courses for {} with orgs:{}".format(len(courses_list), site, org_list))
     return courses_list

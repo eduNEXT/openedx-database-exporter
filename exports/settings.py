@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import logging
 
 # Add settings here
 MY_OPTION = "hola"
@@ -17,3 +18,5 @@ try:
     from .private import *      # pylint: disable=import-error
 except ImportError:
     pass
+
+logging.basicConfig(level=logging.WARNING)
