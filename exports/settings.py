@@ -4,4 +4,5 @@
 # Add settings here
 MY_OPTION = "hola"
 MICROSITE = "***REMOVED***"
-MICROSITE_ORGS = ['***REMOVED******REMOVED***']
+MICROSITE_ORGS_4_USERS = [***REMOVED***]
+MICROSITE_ORGS_4_COURSES = [***REMOVED***]

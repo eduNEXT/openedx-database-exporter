@@ -4,6 +4,7 @@
 import settings
 from databases.mysql import Connection
 import erode_inputs.user_list as user_lister
+import erode_inputs.course_list as course_lister
 
 
 def main():
@@ -23,12 +24,21 @@ def main():
         passwd=db_passwd,
         host=db_host
     )
-    print "Getting user list for {} ...".format(settings.MICROSITE)
 
-    microsite_orgs = settings.MICROSITE_ORGS
+
+    microsite_orgs = settings.MICROSITE_ORGS_4_USERS
     microsite_url = settings.MICROSITE
 
     users_list = user_lister.get_users_list(cnx, microsite_url, microsite_orgs)
     print "First 5 user ids:{}".format(users_list[:5])
+    users_list.sort()
+    print users_list[:15]
+
+    microsite_orgs = settings.MICROSITE_ORGS_4_COURSES
+
+    print ""
+
+    courses_list = course_lister.get_courses_list(cnx, microsite_url, microsite_orgs)
+    print "First 5 course ids:{}".format(courses_list[:5])
 
     cnx.close()

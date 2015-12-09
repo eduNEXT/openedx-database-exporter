@@ -26,7 +26,7 @@ def positive_users_from_enrollment(cnx, org_list):
                                (regex,)
                               )
 
-    print "P: There are {} users in courses from this orgs:{}".format(len(query_result), org_list)
+    print "        P: There are {} users in courses from this orgs:{}".format(len(query_result), org_list)
     return query_result
 
 
@@ -39,7 +39,7 @@ def negative_users_from_enrollment(cnx, org_list):
                                """SELECT DISTINCT(user_id) FROM student_courseenrollment WHERE course_id NOT REGEXP %s""",
                                (regex,)
                               )
-    print "N: There are {} users not in courses from this orgs:{}".format(len(query_result), org_list)
+    print "        N: There are {} users not in courses from this orgs:{}".format(len(query_result), org_list)
     return query_result
 
 
@@ -48,7 +48,7 @@ def not_enrolled_users(cnx):
     ***REMOVED***
     """
     query_result = cnx.execute("""SELECT * FROM auth_user WHERE id not IN (SELECT DISTINCT(user_id) FROM student_courseenrollment)""")
-    print "E: There are {} users not enrroled in a course".format(len(query_result))
+    print "        E: There are {} users not enrroled in a course".format(len(query_result))
     return query_result
 
 
@@ -57,7 +57,7 @@ def users_from_sites(cnx, site):
     Sites: SELECT user_id FROM edxapp.student_usersignupsource where site='***REMOVED***';
     """
     query_result = cnx.execute("""SELECT user_id FROM edxapp.student_usersignupsource where site=%s""", (site,))
-    print "S: There are {} users for {}".format(len(query_result), site)
+    print "        S: There are {} users for {}".format(len(query_result), site)
     return query_result
 
 
@@ -66,9 +66,15 @@ def get_empty_users_recoverable(cnx, site):
     Empty users recoverable = E n S
     """
     E = query_tuple_to_list(not_enrolled_users(cnx), 'id')
+    E.sort()
+    print "        E: {}".format(E[:10])
     S = query_tuple_to_list(users_from_sites(cnx, site), 'user_id')
+    S.sort()
+    print "        S: {}".format(S[:10])
     EnS = intersect_list(E, S)
-    print "EnS: There are {} empty users recoverable for {}".format(len(EnS), site)
+    print "    EnS: There are {} empty users recoverable for {}".format(len(EnS), site)
+    EnS.sort()
+    print "    EnS: {}".format(EnS[:10])
     return EnS
 
 
@@ -78,9 +84,15 @@ def get_site_only_users(cnx, org_list):
     """
 
     P = query_tuple_to_list(positive_users_from_enrollment(cnx, org_list), 'user_id')
+    P.sort()
+    print "        P: {}".format(P[:10])
     N = query_tuple_to_list(negative_users_from_enrollment(cnx, org_list), 'user_id')
+    N.sort()
+    print "        N: {}".format(N[:10])
     PminusN = substract_list(P, N)
-    print "PminusN: There are {} users that are only in courses of these orgs: {}".format(len(PminusN), org_list)
+    print "    PminusN: There are {} users that are only in courses of these orgs: {}".format(len(PminusN), org_list)
+    PminusN.sort()
+    print "    PminusN: {}".format(PminusN[:10])
     return PminusN
 
 
