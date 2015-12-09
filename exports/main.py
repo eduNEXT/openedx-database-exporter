@@ -4,6 +4,7 @@
 import settings
 import logging
 from databases.mysql import Connection
+from operations.base import get_operation_for_table, OperationError, get_all_tables
 
 logger = logging.getLogger(__name__)
 
