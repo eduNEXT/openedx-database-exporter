@@ -3,26 +3,23 @@
 
 import settings
 from databases.mysql import Connection
-import erode_inputs.user_list as user_lister
-import erode_inputs.course_list as course_lister
+import preprocessing.user_list as user_lister
+import preprocessing.course_list as course_lister
 
 
 def main():
     """
     Entry point for our application
     """
-    db_database = "edxapp"
-    db_user = "edxapp001"
-    db_passwd = "edxapp"
-    db_host = "192.168.0.195"
+
 
     print "Starting erode process..."
-    print "Setting up connection to {}@{}".format(db_database, db_host)
+    print "Setting up connection to {}@{}".format(settings.DB_DATABASE, settings.DB_HOST)
     cnx = Connection(
-        db=db_database,
-        user=db_user,
-        passwd=db_passwd,
-        host=db_host
+        db=settings.DB_DATABASE,
+        user=settings.DB_USER,
+        passwd=settings.DB_PASSWD,
+        host=settings.DB_HOST
     )
 
 
@@ -41,4 +38,11 @@ def main():
     courses_list = course_lister.get_courses_list(cnx, microsite_url, microsite_orgs)
     print "First 5 course ids:{}".format(courses_list[:5])
 
+    query_result = cnx.execute(
+                               """SELECT * FROM auth_user WHERE id in %s""",
+                               (users_list[:5],)
+                              )
+    print ""
+    for row in query_result:
+        print "{} {} {}".format(row['id'], row['username'], row['email'])
     cnx.close()
