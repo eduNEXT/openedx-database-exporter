@@ -1,22 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+List of Users:
+
+Variables: Org list, Site url type Name
+
+***REMOVED***
+***REMOVED***
+***REMOVED***
+Sites: SELECT user_id FROM edxapp.student_usersignupsource where site='***REMOVED***';
+
+Users of only this microsite = P-N
+Empty users recoverable = E n S
+
+Total users of a microsite= Users of only this microsite U Empty users recoverable
+"""
+
 from tools import *
 import logging
 
 logger = logging.getLogger(__name__)
-# List of Users:
-
-# Variables: Org list, Site url type Name
-
-# ***REMOVED***
-# ***REMOVED***
-# ***REMOVED***
-# Sites: SELECT user_id FROM edxapp.student_usersignupsource where site='***REMOVED***';
-
-# Users of only this microsite = P-N
-# Empty users recoverable = E n S
-
-# Total users of a microsite= Users of only this microsite U Empty users recoverable
 
 
 def positive_users_from_enrollment(cnx, org_list):

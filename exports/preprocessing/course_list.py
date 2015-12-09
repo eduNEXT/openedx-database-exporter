@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Courses with enrroled students + ...
+
+"""
 from tools import *
 import logging
 
 logger = logging.getLogger(__name__)
 
-# Courses with enrroled students + ...
 
 
 def get_courses_with_enrolled_students(cnx, org_list):
