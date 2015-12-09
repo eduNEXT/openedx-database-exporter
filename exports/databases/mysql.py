@@ -17,13 +17,13 @@ class Connection(object):
     _session = None
     _connection = None
 
-    def __init__(self, host=settings.DB_HOST, user=settings.DB_USER, passwd=settings.DB_PASSWD, db=settings.DB_DATABASE):
+    def __init__(self, host=settings.DB_HOST, user=settings.DB_USER, passwd=settings.DB_PASSWD, db=settings.DB_DATABASE, dict_cursor=False):
         self._host = host
         self._user = user
         self._passwd = passwd
         self._db = db
 
-        self._open(dict_cursor=True)
+        self._open(dict_cursor=dict_cursor)
 
     def _open(self, *args, **kwargs):
         """ Create the connection and the cursor """
