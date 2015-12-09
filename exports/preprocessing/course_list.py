@@ -10,7 +10,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-
 def get_courses_with_enrolled_students(cnx, org_list):
     """
     Courses from the given orgs that have enrolled students
