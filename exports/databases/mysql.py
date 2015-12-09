@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import MySQLdb
+from .. import settings
 
 
 class Connection(object):
@@ -16,7 +17,7 @@ class Connection(object):
     _session = None
     _connection = None
 
-    def __init__(self, host='localhost', user='root', passwd='', db=''):
+    def __init__(self, host=settings.DB_HOST, user=settings.DB_USER, passwd=settings.DB_PASSWD, db=settings.DB_DATABASE):
         self._host = host
         self._user = user
         self._passwd = passwd

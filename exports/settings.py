@@ -9,7 +9,7 @@ MICROSITE_ORGS_4_USERS = [***REMOVED***]
 MICROSITE_ORGS_4_COURSES = [***REMOVED***]
 
 
-DB_DATABASE = ""
+DB_DATABASE = "edxapp"
 DB_USER = "root"
 DB_PASSWD = ""
 DB_HOST = "localhost"
