@@ -44,5 +44,10 @@ class Connection(object):
         self._connection.close()
 
     def execute(self, query, args=None):
-        self._session.execute(query, args)
+        try:
+            self._session.execute(query, args)
+        except Exception as e:
+            print "Error on query: "+self._session._last_executed
+            raise e
+
         return self._session.fetchall()

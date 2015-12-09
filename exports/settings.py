@@ -3,3 +3,5 @@
 
 # Add settings here
 MY_OPTION = "hola"
+MICROSITE = "***REMOVED***"
+MICROSITE_ORGS = ['***REMOVED******REMOVED***']
