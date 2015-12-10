@@ -24,6 +24,7 @@ def main():
         try:
             operations = utils.get_operation_for_table(cnx, table_name)
             for operation in operations:
+                print operation
                 all_ops.append(operation)
 
         except OperationError, e:

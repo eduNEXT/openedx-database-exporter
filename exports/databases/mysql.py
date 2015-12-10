@@ -4,6 +4,10 @@
 import MySQLdb
 from .. import settings
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class Connection(object):
     """
@@ -46,7 +50,7 @@ class Connection(object):
 
     def execute(self, query, args=None, dry_run=False):
         if dry_run:
-            print "Executing: {} with args:{}".format(query,args)
+            logging.debug("Executing: {} with args:{}".format(query, unicode(args)[:100]))
             return
 
         try:

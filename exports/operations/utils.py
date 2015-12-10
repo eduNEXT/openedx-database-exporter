@@ -73,9 +73,10 @@ def get_operation_for_table(cnx, table_name):
             target.append(parent_operation)
 
     # We can reduce all the operations to a subset of only the required. e.g. Drop  + Truncate = Drop
-    target = reduce(add_operations, target)
-    if not isinstance(target, tuple):
-        target = (target,)
+    if len(target):
+        target = reduce(add_operations, target)
+        if not isinstance(target, tuple):
+            target = (target,)
 
     # We can make this a FailOperation
     if len(target) == 0:

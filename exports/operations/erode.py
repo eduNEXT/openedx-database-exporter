@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from .. import settings
+from ..preprocessing import user_list
+from ..preprocessing import course_list
+
 from .base import Operation
 
 
@@ -21,12 +24,15 @@ class Erode(Operation):
 
     def __call__(self):
         # assert that there is an eroder_list
+        self.fill_eroder_list()
         query_result = self.cnx.execute("""DELETE from %s WHERE %s IN %s""", (self.table_name, self.column_name, self.eroder_list), dry_run=self.dry_run)
         return query_result
 
-    def setErodeVariables(self, column_name, eroder_list):
-        self.column_name = column_name
-        self.eroder_list = eroder_list
+    def fill_eroder_list(self):
+        if self.uses == Erode.LIST_OF_COURSES:
+            self.eroder_list = ErodeHelper.get_courses_list(self.cnx)
+        if self.uses == Erode.LIST_OF_USERS:
+            self.eroder_list = ErodeHelper.get_users_list(self.cnx)
 
     @classmethod
     def get_all(cls, cnx, table_name):
@@ -79,3 +85,28 @@ class Erode(Operation):
 class ErodeByParent(Erode):
     def __init__(self, *args, **kwargs):
         super(ErodeByParent, self).__init__(*args, **kwargs)
+
+
+class ErodeHelper():
+    """Helper class that obtains the needed lists for erode"""
+    users_list = None
+    courses_list = None
+    host_name = settings.MICROSITE_HOSTNAME
+    org_list_users = settings.MICROSITE_ORGS_4_USERS
+    org_list_courses = settings.MICROSITE_ORGS_4_COURSES
+
+    @staticmethod
+    def get_users_list(cnx):
+        if not ErodeHelper.users_list:
+            ErodeHelper.users_list = user_list.get_users_list(cnx, ErodeHelper.host_name, ErodeHelper.org_list_users)
+        return ErodeHelper.users_list
+
+    @staticmethod
+    def get_courses_list(cnx):
+        if not ErodeHelper.courses_list:
+            ErodeHelper.courses_list = course_list.get_courses_list(cnx, ErodeHelper.host_name, ErodeHelper.org_list_courses)
+        return ErodeHelper.courses_list
+
+    @staticmethod
+    def get_other_list(args):
+        None

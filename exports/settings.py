@@ -42,7 +42,7 @@ GLOBAL_DRY_RUN = True
 
 # Settings for the preprocess module
 
-MICROSITE = "***REMOVED***"
+MICROSITE_HOSTNAME = "***REMOVED***"
 MICROSITE_ORGS_4_USERS = [***REMOVED***]
 MICROSITE_ORGS_4_COURSES = [***REMOVED***]
 
