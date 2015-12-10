@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import re
-import base
+from .base import Operation
 from .. import settings
 
 
-class Drop(base.Operation):
+class Drop(Operation):
     """
     Drop
     """
@@ -14,9 +14,9 @@ class Drop(base.Operation):
         self.type = 'Drop'
 
     def __call__(self):
-        super(base.Operation)
+        super(Operation)
         # query_result = self.cnx.execute("""DROP TABLE %s""", (self.table_name,))
-        return query_result
+        # return query_result
 
     @staticmethod
     def is_drop_required(cnx, table_name):

@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 import re
 from .. import settings
-import base
+from .base import Operation
 
 
-class Erode(base.Operation):
+class Erode(Operation):
     """
     Erode
     """
@@ -13,7 +13,7 @@ class Erode(base.Operation):
         self.type = 'Erode'
 
     def __call__(self):
-        super(base.Operation)
+        super(Operation)
         if self.erode_by_course:
             None
             # query_result = self.cnx.execute("""DELETE from %s where course_id in %s""", (self.table_name,course_list))
@@ -23,7 +23,7 @@ class Erode(base.Operation):
         if self.other_delete:
             None
             # query_result = self.cnx.execute("""DELETE from %s where %s in %s""", (self.table_name, self.column_name, self.eroder_list))
-        return query_result
+        # return query_result
 
     @staticmethod
     def is_erode_required(cnx, table_name):
