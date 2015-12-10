@@ -38,7 +38,7 @@ FORCED_NOOP = [
 ***REMOVED***
 ]
 
-GLOBAL_DRY_RUN = True
+GLOBAL_DRY_RUN = False
 
 # Settings for the preprocess module
 

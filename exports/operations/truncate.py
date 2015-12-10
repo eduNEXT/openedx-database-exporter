@@ -16,7 +16,9 @@ class Truncate(Operation):
 
     def __call__(self):
         super(Operation)
-        query_result = self.cnx.execute("""TRUNCATE TABLE %s""", (self.table_name,), dry_run=self.dry_run)
+        print self.table_name
+        query_string = """TRUNCATE TABLE {}""".format(self.table_name)
+        query_result = self.cnx.execute(query_string, dry_run=self.dry_run)
         return query_result
 
     @staticmethod

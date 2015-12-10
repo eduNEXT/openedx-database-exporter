@@ -6,7 +6,6 @@ import logging
 from databases.mysql import Connection
 from operations.base import OperationError
 import operations.utils as utils
-import preprocessing
 
 logger = logging.getLogger(__name__)
 
@@ -31,21 +30,12 @@ def main():
             print "A Table lacks operations: \033[91m{}\033[00m".format(e.msg)
 
     # Sort and execute
+    print "Executing Operations"
+    cnx.execute("SET FOREIGN_KEY_CHECKS=0", dry_run=settings.GLOBAL_DRY_RUN)
     for op in all_ops:
         print op
         print "result: {}".format(op())
-
-    # SET FOREIGN_KEY_CHECKS=0;
-    # SET FOREIGN_KEY_CHECKS=1;
+    cnx.execute("SET FOREIGN_KEY_CHECKS=1", dry_run=settings.GLOBAL_DRY_RUN)
 
     logger.info("Closing connection to DB")
     cnx.close()
-
-
-users_list = None
-courses_list = None
-
-
-def init_lists(cnx, site, org_list):
-    users_list = preprocessing.user_list.get_users_list(cnx, site, org_list)
-    courses_list = preprocessing.course_list.get_courses_list(cnx, site, org_list)
