@@ -6,6 +6,7 @@ import logging
 from databases.mysql import Connection
 from operations.base import OperationError
 import operations.utils as utils
+import preprocessing
 
 logger = logging.getLogger(__name__)
 
@@ -38,3 +39,12 @@ def main():
 
     logger.info("Closing connection to DB")
     cnx.close()
+
+
+users_list = None
+courses_list = None
+
+
+def init_lists(cnx, site, org_list):
+    users_list = preprocessing.user_list.get_users_list(cnx, site, org_list)
+    courses_list = preprocessing.course_list.get_courses_list(cnx, site, org_list)
