@@ -15,8 +15,8 @@ class Drop(Operation):
 
     def __call__(self):
         super(Operation)
-        # query_result = self.cnx.execute("""DROP TABLE %s""", (self.table_name,))
-        # return query_result
+        query_result = self.cnx.execute("""DROP TABLE %s""", (self.table_name,), dry_run=self.dry_run)
+        return query_result
 
     @staticmethod
     def is_drop_required(cnx, table_name):

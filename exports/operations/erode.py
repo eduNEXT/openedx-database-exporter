@@ -13,17 +13,12 @@ class Erode(Operation):
         self.type = 'Erode'
 
     def __call__(self):
-        super(Operation)
-        if self.erode_by_course:
-            None
-            # query_result = self.cnx.execute("""DELETE from %s where course_id in %s""", (self.table_name,course_list))
-        if self.erode_by_user:
-            None
-            # query_result = self.cnx.execute("""DELETE from %s where user_id in %s""", (self.table_name,user_list))
-        if self.other_delete:
-            None
-            # query_result = self.cnx.execute("""DELETE from %s where %s in %s""", (self.table_name, self.column_name, self.eroder_list))
-        # return query_result
+        query_result = self.cnx.execute("""DELETE from %s where %s in %s""", (self.table_name, self.column_name, self.eroder_list), dry_run=self.dry_run)
+        return query_result
+
+    def setErodeVariables(self, column_name, eroder_list):
+        self.column_name = column_name
+        self.eroder_list = eroder_list
 
     @staticmethod
     def is_erode_required(cnx, table_name):

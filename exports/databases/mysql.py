@@ -44,7 +44,11 @@ class Connection(object):
         self._session.close()
         self._connection.close()
 
-    def execute(self, query, args=None):
+    def execute(self, query, args=None, dry_run=False):
+        if dry_run:
+            print "Executing: {} with args:{}".format(query,args)
+            return
+
         try:
             self._session.execute(query, args)
         except Exception as e:

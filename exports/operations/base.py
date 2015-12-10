@@ -12,7 +12,7 @@ class Operation(object):
 
     def __init__(self, operation, *args, **kwargs):
         self.type = operation
-
+        self.dry_run = True
 
         if kwargs.get('cnx', False):
             self.cnx = kwargs.get('cnx')
