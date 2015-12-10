@@ -11,10 +11,13 @@ class Operation(object):
 
     def __init__(self, *args, **kwargs):
         self.dry_run = settings.GLOBAL_DRY_RUN
-        self.color = "\033[35m"
+        self.color = "\033[31m"
 
         if kwargs.get('table_name', False):
             self.table_name = kwargs.get('table_name')
+
+        if kwargs.get('name', False):
+            self.name = kwargs.get('name')
 
         if kwargs.get('cnx', False):
             self.cnx = kwargs.get('cnx')
@@ -23,13 +26,19 @@ class Operation(object):
             raise Exception('The operation requires a connection')
 
     def __call__(self):
-        print "executing: {}".format(self.__class__)
+        print "executing: {}".format(self.get_name())
 
     def __unicode__(self):
-        return u"<Operation: {}{}\033[00m> on Table: {}".format(self.color, type(self).__name__, self.table_name)
+        return u"<Operation: {}{}\033[00m> on Table: {}".format(self.color, self.get_name(), self.table_name)
 
     def __repr__(self):
         return unicode(self)
+
+    def get_name(self):
+        if hasattr(self, 'name'):
+            return self.name
+        else:
+            return type(self).__name__
 
 
 class OperationError(Exception):

@@ -22,7 +22,7 @@ def get_parent_ops(cnx, table_name):
     )
 
     for parent in parents:
-        target.append(Operation('evaluate_parent_{}'.format(parent['TABLE_NAME']), cnx=cnx, table_name=table_name))
+        target.append(Operation(name='evaluate_parent_{}'.format(parent['TABLE_NAME']), cnx=cnx, table_name=table_name))
 
     return target
 
