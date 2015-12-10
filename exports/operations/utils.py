@@ -14,19 +14,12 @@ def get_operation_for_table(cnx, table_name):
         - drop
     """
     target = []
+    operations = [Drop, Truncate, Erode]
 
-    # The highest precedence
-    if Erode.is_erode_required(cnx, table_name):
-        target.append(Erode(cnx=cnx, table_name=table_name))
-
-    if Truncate.is_truncate_required(cnx, table_name):
-        target.append(Truncate(cnx=cnx, table_name=table_name))
-
-    # The lowest precedence
-    if Drop.is_drop_required(cnx, table_name):
-        target.append(Drop(cnx=cnx, table_name=table_name))
-
-    # We can reduce all the operations to a subset of only the required. e.g. Drop  + Truncate = Drop
+    for operation in operations:
+        if operation.is_required(cnx, table_name):
+            target.append(operation(cnx=cnx, table_name=table_name))
+            # break? because other operations are not needed?
 
     if len(target) == 0:
         raise OperationError("Error at: {}. Every table must have at least one operation".format(table_name))

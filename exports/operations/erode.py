@@ -10,7 +10,8 @@ class Erode(Operation):
     Erode
     """
     def __init__(self, operation, *args, **kwargs):
-        self.type = 'Erode'
+        super(Erode, self).__init__(*args, **kwargs)
+        self.color = "\033[34m"
 
     def __call__(self):
         query_result = self.cnx.execute("""DELETE from %s where %s in %s""", (self.table_name, self.column_name, self.eroder_list), dry_run=self.dry_run)
@@ -21,7 +22,7 @@ class Erode(Operation):
         self.eroder_list = eroder_list
 
     @staticmethod
-    def is_erode_required(cnx, table_name):
+    def is_required(cnx, table_name):
         # TODO
 
         return False

@@ -11,7 +11,9 @@ class Truncate(Operation):
     """
 
     def __init__(self, *args, **kwargs):
-        self.type = 'Truncate'
+        super(Truncate, self).__init__(*args, **kwargs)
+        print "init truncate"
+        self.color = "\033[36m"
 
     def __call__(self):
         super(Operation)
@@ -19,7 +21,7 @@ class Truncate(Operation):
         return query_result
 
     @staticmethod
-    def is_truncate_required(cnx, table_name):
+    def is_required(cnx, table_name):
         """
         Things to be truncated:
             All empty tables

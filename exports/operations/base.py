@@ -10,10 +10,12 @@ class Operation(object):
     commands to process a table.
     """
 
-    def __init__(self, operation, *args, **kwargs):
-        self.type = operation
+    def __init__(self, *args, **kwargs):
+        print "Init Operation"
         self.dry_run = True
-
+        self.color = "\033[35m"
+        if kwargs.get('table_name', False):
+            self.table_name = kwargs.get('table_name')
         if kwargs.get('cnx', False):
             self.cnx = kwargs.get('cnx')
         else:
@@ -21,18 +23,10 @@ class Operation(object):
             raise Exception('The operation requires a connection')
 
     def __call__(self):
-        # TODO: either define here based on the type or extend this class and
-        # implement there
         print "executing: {}".format(self.type)
 
     def __unicode__(self):
-        colors = {
-            "trun": "\033[36m",
-            "erod": "\033[34m",
-            "drop": "\033[33m",
-        }
-        color = colors.get(self.type[:4], "\033[35m")
-        return u"<Operation: {}{}\033[00m>".format(color, self.type)
+        return u"<Operation: {}{}\033[00m> on Table: {}".format(self.color, type(self).__name__, self.table_name)
 
     def __repr__(self):
         return unicode(self)
