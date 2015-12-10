@@ -6,16 +6,16 @@ import logging
 # Settings for the operations module
 
 FORCED_ERODE = {
-    'auth_user': {'op': 'erode_by_user_id', 'column_name': 'id'},
-    'south_migrationhistory': {'op': 'erode_south_migrationhistory'},
-    'course_groups_coursecohort': {'op': 'erode_by_course_id_on_parent', 'parent': ''},
-    'courseware_studentmodulehistory': {'op': 'erode_by_user_id_on_parent', 'parent': ''},
-    'courseware_xmodulestudentinfofield': {'op': 'erode_by_user_id', 'column_name': 'student_id'},
-    'courseware_xmodulestudentprefsfield': {'op': 'erode_by_user_id', 'column_name': 'student_id'},
-    'workflow_assessmentworkflowstep': {'op': 'erode_by_course_id_on_parent', 'parent': 'workflow_assessmentworkflow'},
-    'django_comment_client_permission_roles': {'op': 'erode_by_course_id_on_parent', 'parent': 'django_comment_client_role'},
-    'student_manualenrollmentaudit': {'op': 'erode_by_user_id_on_parent', 'parent': 'student_courseenrollment'},  # Some data might be lost when the initial state was unenrolled
-    'submissions_scoresummary': {'op': 'erode_by_course_id_on_parent', 'parent': 'submissions_studentitem'},
+    'auth_user': {'Erode': {'uses': 'user_list', 'column_name': 'id'}},
+    'south_migrationhistory': {'ErodeSouthMigration': {}},
+    'course_groups_coursecohort': {'ErodeByParent': {'column_name': 'course_id', 'parent': 'to_be_determined', 'uses': 'course_list'}},
+    'courseware_studentmodulehistory': {'ErodeByParent': {'column_name': 'user_id', 'parent': 'to_be_determined', 'uses': 'user_list'}},
+    'courseware_xmodulestudentinfofield': {'Erode': {'uses': 'user_list', 'column_name': 'student_id'}},
+    'courseware_xmodulestudentprefsfield': {'Erode': {'uses': 'user_list', 'column_name': 'student_id'}},
+    'workflow_assessmentworkflowstep': {'ErodeByParent': {'column_name': 'course_id', 'parent': 'workflow_assessmentworkflow', 'uses': 'course_list'}},
+    'django_comment_client_permission_roles': {'ErodeByParent': {'column_name': 'course_id', 'parent': 'django_comment_client_role', 'uses': 'course_list'}},
+    'student_manualenrollmentaudit': {'ErodeByParent': {'column_name': 'user_id', 'parent': 'student_courseenrollment', 'uses': 'user_list'}},   # Some data might be lost when the initial state was unenrolled
+    'submissions_scoresummary': {'ErodeByParent': {'column_name': 'course_id', 'parent': 'submissions_studentitem', 'uses': 'course_list'}},
 }
 FORCED_TRUNCATE = [
     '^third_party_auth_oauth2providerconfig$',

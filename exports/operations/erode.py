@@ -39,8 +39,13 @@ class Erode(Operation):
 
         settings.FORCED_ERODE
         if table_name in settings.FORCED_ERODE.keys():
-            extras = settings.FORCED_ERODE.get(table_name)
-            target.append(Erode(cnx=cnx, table_name=table_name, **extras))
+            obj = settings.FORCED_ERODE.get(table_name)
+            for classname, extras in obj.iteritems():
+                try:
+                    op = globals()[classname]
+                    target.append(op(cnx=cnx, table_name=table_name, **extras))
+                except KeyError:
+                    target.append(Operation(name='Missing Operation Definition: {}'.format(classname), cnx=cnx, table_name=table_name))
 
         if len(target) == 0:
             result = cnx.execute(
@@ -63,9 +68,14 @@ class Erode(Operation):
 
                 # TODO: we should filter better whether a user_id column_name really is what it shoudl be. E.g. to be foreing_key
                 if row.get('COLUMN_NAME') == 'user_profile_id':
-                    target.append(Operation('erode_by_user_profile_id', cnx=cnx, table_name=table_name))
+                    target.append(Operation(name='erode_by_user_profile_id', cnx=cnx, table_name=table_name))
 
         return target
 
     def __unicode__(self):
         return u"<Operation: {}{} by {}\033[00m> on Table: {}".format(self.color, self.get_name(), self.column_name, self.table_name)
+
+
+class ErodeByParent(Erode):
+    def __init__(self, *args, **kwargs):
+        super(ErodeByParent, self).__init__(*args, **kwargs)
