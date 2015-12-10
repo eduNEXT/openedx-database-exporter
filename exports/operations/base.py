@@ -11,7 +11,6 @@ class Operation(object):
     """
 
     def __init__(self, *args, **kwargs):
-        print "Init Operation"
         self.dry_run = True
         self.color = "\033[35m"
         if kwargs.get('table_name', False):

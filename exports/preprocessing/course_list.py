@@ -33,3 +33,4 @@ def get_courses_list(cnx, site, org_list):
     courses_list = courses_from_enrolment #+ ..
     logger.debug("courses: There are {} courses for {} with orgs:{}".format(len(courses_list), site, org_list))
     return courses_list
+

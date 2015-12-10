@@ -12,7 +12,6 @@ class Truncate(Operation):
 
     def __init__(self, *args, **kwargs):
         super(Truncate, self).__init__(*args, **kwargs)
-        print "init truncate"
         self.color = "\033[36m"
 
     def __call__(self):
