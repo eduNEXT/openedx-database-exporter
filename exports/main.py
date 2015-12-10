@@ -31,8 +31,8 @@ def main():
 
     # Sort and execute
     for op in all_ops:
-       print op
-       op()
+        print op
+        print op()
 
     #SET FOREIGN_KEY_CHECKS=0;
     #SET FOREIGN_KEY_CHECKS=1;
