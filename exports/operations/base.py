@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import re
 from .. import settings
 
 
@@ -11,10 +10,12 @@ class Operation(object):
     """
 
     def __init__(self, *args, **kwargs):
-        self.dry_run = True
+        self.dry_run = settings.GLOBAL_DRY_RUN
         self.color = "\033[35m"
+
         if kwargs.get('table_name', False):
             self.table_name = kwargs.get('table_name')
+
         if kwargs.get('cnx', False):
             self.cnx = kwargs.get('cnx')
         else:
@@ -22,7 +23,7 @@ class Operation(object):
             raise Exception('The operation requires a connection')
 
     def __call__(self):
-        print "executing: {}".format(self.type)
+        print "executing: {}".format(self.__class__)
 
     def __unicode__(self):
         return u"<Operation: {}{}\033[00m> on Table: {}".format(self.color, type(self).__name__, self.table_name)
