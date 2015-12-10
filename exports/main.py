@@ -34,8 +34,8 @@ def main():
         print op
         print "result: {}".format(op())
 
-    #SET FOREIGN_KEY_CHECKS=0;
-    #SET FOREIGN_KEY_CHECKS=1;
+    # SET FOREIGN_KEY_CHECKS=0;
+    # SET FOREIGN_KEY_CHECKS=1;
 
     logger.info("Closing connection to DB")
     cnx.close()
