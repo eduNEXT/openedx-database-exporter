@@ -25,7 +25,7 @@ class Erode(Operation):
     def __call__(self):
         # assert that there is an eroder_list
         self.fill_eroder_list()
-        query_string = """DELETE from {} WHERE {} IN %s""".format(self.table_name, self.column_name)
+        query_string = """DELETE from {} WHERE {} NOT IN %s""".format(self.table_name, self.column_name)
         query_result = self.cnx.execute(query_string, (self.eroder_list,), dry_run=self.dry_run)
         return query_result
 
