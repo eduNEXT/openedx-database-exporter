@@ -83,11 +83,6 @@ class Erode(Operation):
         return u"<Operation: {}{} by {}\033[00m> on Table: {}".format(self.color, self.get_name(), self.column_name, self.table_name)
 
 
-class ErodeByParent(Erode):
-    def __init__(self, *args, **kwargs):
-        super(ErodeByParent, self).__init__(*args, **kwargs)
-
-
 class ErodeHelper():
     """Helper class that obtains the needed lists for erode"""
     users_list = None
