@@ -16,7 +16,8 @@ class Drop(Operation):
 
     def __call__(self):
         super(Operation)
-        query_result = self.cnx.execute("""DROP TABLE %s""", (self.table_name,), dry_run=self.dry_run)
+        query_string = """DROP TABLE {}""".format(self.table_name)
+        query_result = self.cnx.execute(query_string, dry_run=self.dry_run)
         return query_result
 
     @staticmethod

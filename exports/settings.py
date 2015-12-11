@@ -38,11 +38,11 @@ FORCED_NOOP = [
 ***REMOVED***
 ]
 
-GLOBAL_DRY_RUN = True
+GLOBAL_DRY_RUN = False
 
 # Settings for the preprocess module
 
-MICROSITE = "***REMOVED***"
+MICROSITE_HOSTNAME = "***REMOVED***"
 MICROSITE_ORGS_4_USERS = [***REMOVED***]
 MICROSITE_ORGS_4_COURSES = [***REMOVED***]
 
