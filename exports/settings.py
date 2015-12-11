@@ -6,7 +6,13 @@ import logging
 # Settings for the operations module
 
 FORCED_ERODE = {
-    'auth_user': {'Erode': {'uses': 'user_list', 'column_name': 'id'}},
+    'auth_user': {
+        'Erode': {
+            'uses': 'user_list',
+            'column_name': 'id',
+            'priority': 5,
+        }
+    },
     'south_migrationhistory': {'ErodeByAppName': {'column_name': 'app_name'}},
     'course_groups_coursecohort': {
         'ErodeByParent': {

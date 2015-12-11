@@ -14,6 +14,7 @@ class Erode(Operation):
     LIST_OF_USERS = 'user_list'
     LIST_OF_COURSES = 'course_list'
     color = "\033[34m"
+    priority = 40
 
     def __init__(self, *args, **kwargs):
         super(Erode, self).__init__(*args, **kwargs)
@@ -82,6 +83,7 @@ class Erode(Operation):
 class ErodeByParent(Erode):
     """
     """
+    priority = 50
 
     def __init__(self, *args, **kwargs):
         super(Erode, self).__init__(*args, **kwargs)

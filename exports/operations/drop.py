@@ -10,6 +10,7 @@ class Drop(Operation):
     Drop
     """
     color = "\033[33m"
+    priority = 10
 
     def __init__(self, *args, **kwargs):
         super(Drop, self).__init__(*args, **kwargs)

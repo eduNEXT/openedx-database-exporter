@@ -10,6 +10,7 @@ class Noop(Operation):
     No Operation
     """
     color = "\033[32m"
+    priority = 20
 
     def __init__(self, *args, **kwargs):
         super(Noop, self).__init__(*args, **kwargs)

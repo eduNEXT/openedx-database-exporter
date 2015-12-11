@@ -9,6 +9,7 @@ class Operation(object):
     commands to process a table.
     """
     color = "\033[31m"
+    priority = 0
 
     def __init__(self, *args, **kwargs):
         self.dry_run = settings.GLOBAL_DRY_RUN
@@ -18,6 +19,8 @@ class Operation(object):
 
         if kwargs.get('name', False):
             self.name = kwargs.get('name')
+
+        self.priority = kwargs.get('priority', self.priority)
 
         if kwargs.get('cnx', False):
             self.cnx = kwargs.get('cnx')
