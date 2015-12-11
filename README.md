@@ -21,3 +21,13 @@ source ../venv/bin/activate
 pip install -r requirements.txt
 pip install -e .
 ```
+
+
+# databases
+```
+mysql -u root -p edxapp < /vagrant/data/MOAR+PATH/edxapp.sql
+***REMOVED***
+
+--extended-insert
+--net_buffer_length=5000
+```

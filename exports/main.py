@@ -18,6 +18,8 @@ def main():
     logger.info("Setting up connection to {}@{}".format(settings.DB_DATABASE, settings.DB_HOST))
     cnx = Connection(dict_cursor=True)
 
+    dry_run = settings.GLOBAL_DRY_RUN
+
     # Your CODE here
     all_ops = []
     for table_name in utils.get_all_tables(cnx):
@@ -31,13 +33,16 @@ def main():
 
     # Sort and execute
     logger.info("Executing Operations")
-    cnx.execute("SET FOREIGN_KEY_CHECKS=0", dry_run=settings.GLOBAL_DRY_RUN)
+    cnx.execute("SET FOREIGN_KEY_CHECKS=0", dry_run=dry_run)
 
     all_ops.sort(key=operator.attrgetter('priority'), reverse=True)
 
     for op in all_ops:
         logger.info("{} => result: {}".format(op, op()))
-    cnx.execute("SET FOREIGN_KEY_CHECKS=1", dry_run=settings.GLOBAL_DRY_RUN)
+
+    if not dry_run:
+        cnx._connection.commit()
+    cnx.execute("SET FOREIGN_KEY_CHECKS=1", dry_run=dry_run)
 
     logger.info("Closing connection to DB")
     cnx.close()

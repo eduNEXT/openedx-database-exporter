@@ -162,6 +162,7 @@ class ErodeHelper():
     def get_users_list(cnx):
         if not ErodeHelper.users_list:
             ErodeHelper.users_list = user_list.get_users_list(cnx, ErodeHelper.host_name, ErodeHelper.org_list_users)
+            ErodeHelper.users_list.sort()
         return ErodeHelper.users_list
 
     @staticmethod
