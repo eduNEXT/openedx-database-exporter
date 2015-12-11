@@ -90,17 +90,17 @@ class ErodeByParent(Erode):
         self.uses = kwargs.get('uses')
         self.parent = kwargs.get('parent')
 
-        self.is_foreing_key_on_child = True
-        self.child_id = kwargs.get('child_id')
+        self.child_id = kwargs.get('child_id', 'id')
         self.parent_id = kwargs.get('parent_id', 'id')
 
         # This is probably empty
         self.eroder_list = kwargs.get('eroder_list')
 
-    def __call__(self):
+        if self.child_id == self.parent_id == 'id':
+            raise Exception("""Eroding with both parent and child ids as 'id' is not really cool.
+                Check your configuration for table {}""".format(self.table_name))
 
-        if not self.is_foreing_key_on_child:
-            raise Exception("Not sure how to handle foreing_key on parents yet")
+    def __call__(self):
 
         prepared_query = """DELETE
         FROM {table_name}

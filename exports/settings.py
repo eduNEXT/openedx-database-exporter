@@ -91,6 +91,22 @@ FORCED_ERODE = {
         }
     },
     'django_content_type': {'ErodeByAppName': {'column_name': 'app_label'}},
+    'auth_group': {
+        'ErodeByParent': {
+            'column_name': 'user_id',
+            'parent': 'auth_user_groups',
+            'uses': 'user_list',
+            'parent_id': 'group_id',
+        }
+    },
+    'auth_permission': {
+        'ErodeByParent': {
+            'column_name': 'user_id',
+            'parent': 'auth_user_user_permissions',
+            'uses': 'user_list',
+            'parent_id': 'permission_id',
+        }
+    },
 }
 FORCED_TRUNCATE = [
     '^third_party_auth_oauth2providerconfig$',
