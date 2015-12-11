@@ -83,6 +83,22 @@ class Erode(Operation):
         return u"<Operation: {}{} by {}\033[00m> on Table: {}".format(self.color, self.get_name(), self.column_name, self.table_name)
 
 
+class ErodeSouthMigration(Erode):
+    """
+    This is a fixed migration to remove the rows on the south_migrationhistory table
+    that belong to our internal operation
+    """
+
+    def __call__(self):
+        query_string = """DELETE FROM south_migrationhistory WHERE app_name = %s"""
+        query_result = self.cnx.execute(query_string, ('microsite_configuration',), dry_run=self.dry_run)
+        return query_result
+
+    def __unicode__(self):
+        return u"<Operation: {}{}\033[00m>".format(self.color, self.get_name())
+
+
+
 class ErodeHelper():
     """Helper class that obtains the needed lists for erode"""
     users_list = None
