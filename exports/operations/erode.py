@@ -73,10 +73,6 @@ class Erode(Operation):
                 if row.get('COLUMN_NAME') == 'user_id':
                     target.append(Erode(uses=cls.LIST_OF_USERS, cnx=cnx, table_name=table_name, column_name='user_id'))
 
-                # TODO: we should filter better whether a user_id column_name really is what it shoudl be. E.g. to be foreing_key
-                if row.get('COLUMN_NAME') == 'user_profile_id':
-                    target.append(Operation(name='erode_by_user_profile_id', cnx=cnx, table_name=table_name))
-
         return target
 
     def __unicode__(self):
