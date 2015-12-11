@@ -13,10 +13,10 @@ class Erode(Operation):
     """
     LIST_OF_USERS = 'user_list'
     LIST_OF_COURSES = 'course_list'
+    color = "\033[34m"
 
     def __init__(self, *args, **kwargs):
         super(Erode, self).__init__(*args, **kwargs)
-        self.color = "\033[34m"
         self.column_name = kwargs.get('column_name')
         self.uses = kwargs.get('uses')
         if kwargs.get('eroder_list', False):
@@ -83,6 +83,53 @@ class Erode(Operation):
         return u"<Operation: {}{} by {}\033[00m> on Table: {}".format(self.color, self.get_name(), self.column_name, self.table_name)
 
 
+class ErodeByParent(Erode):
+    """
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(Erode, self).__init__(*args, **kwargs)
+
+        self.column_name = kwargs.get('column_name')
+        self.uses = kwargs.get('uses')
+        self.parent = kwargs.get('parent')
+
+        self.is_foreing_key_on_child = True
+        self.child_id = kwargs.get('child_id')
+        self.parent_id = kwargs.get('parent_id', 'id')
+
+        # This is probably empty
+        self.eroder_list = kwargs.get('eroder_list')
+
+    def __call__(self):
+
+        if not self.is_foreing_key_on_child:
+            raise Exception("Not sure how to handle foreing_key on parents yet")
+
+        prepared_query = """DELETE
+        FROM {table_name}
+        WHERE {child_id} IN (
+            SELECT {parent_id}
+            from {parent_table}
+            where {column_name} not in %s
+        )""".format(
+            table_name=self.table_name,
+            child_id=self.child_id,
+            parent_id=self.parent_id,
+            parent_table=self.parent,
+            column_name=self.column_name,
+        )
+
+        self.fill_eroder_list()
+        query_result = self.cnx.execute(prepared_query, (self.eroder_list,), dry_run=self.dry_run)
+        return query_result
+
+    def __unicode__(self):
+        return u"<Operation: {}{} by {}\033[00m> on Table: {}".format(
+            self.color, self.get_name(), self.column_name, self.table_name
+        )
+
+
 class ErodeSouthMigration(Erode):
     """
     This is a fixed migration to remove the rows on the south_migrationhistory table
@@ -96,7 +143,6 @@ class ErodeSouthMigration(Erode):
 
     def __unicode__(self):
         return u"<Operation: {}{}\033[00m>".format(self.color, self.get_name())
-
 
 
 class ErodeHelper():

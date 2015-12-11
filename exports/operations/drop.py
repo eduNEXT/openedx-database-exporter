@@ -9,10 +9,10 @@ class Drop(Operation):
     """
     Drop
     """
+    color = "\033[33m"
 
     def __init__(self, *args, **kwargs):
         super(Drop, self).__init__(*args, **kwargs)
-        self.color = "\033[33m"
 
     def __call__(self):
         super(Operation)

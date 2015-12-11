@@ -9,10 +9,10 @@ class Truncate(Operation):
     """
     Truncate
     """
+    color = "\033[36m"
 
     def __init__(self, *args, **kwargs):
         super(Truncate, self).__init__(*args, **kwargs)
-        self.color = "\033[36m"
 
     def __call__(self):
         super(Operation)

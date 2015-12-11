@@ -8,10 +8,10 @@ class Operation(object):
     The operation class defines a callable that carries out a set of sql
     commands to process a table.
     """
+    color = "\033[31m"
 
     def __init__(self, *args, **kwargs):
         self.dry_run = settings.GLOBAL_DRY_RUN
-        self.color = "\033[31m"
 
         if kwargs.get('table_name', False):
             self.table_name = kwargs.get('table_name')
