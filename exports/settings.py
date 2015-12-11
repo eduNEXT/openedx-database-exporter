@@ -7,7 +7,7 @@ import logging
 
 FORCED_ERODE = {
     'auth_user': {'Erode': {'uses': 'user_list', 'column_name': 'id'}},
-    'south_migrationhistory': {'ErodeSouthMigration': {}},
+    'south_migrationhistory': {'ErodeByAppName': {'column_name': 'app_name'}},
     'course_groups_coursecohort': {
         'ErodeByParent': {
             'column_name': 'course_id',
@@ -90,6 +90,7 @@ FORCED_ERODE = {
             'child_id': 'user_profile_id',
         }
     },
+    'django_content_type': {'ErodeByAppName': {'column_name': 'app_label'}},
 }
 FORCED_TRUNCATE = [
     '^third_party_auth_oauth2providerconfig$',

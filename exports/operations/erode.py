@@ -126,15 +126,22 @@ class ErodeByParent(Erode):
         )
 
 
-class ErodeSouthMigration(Erode):
+class ErodeByAppName(Erode):
     """
     This is a fixed migration to remove the rows on the south_migrationhistory table
     that belong to our internal operation
     """
 
+    def __init__(self, *args, **kwargs):
+        super(ErodeByAppName, self).__init__(*args, **kwargs)
+        self.apps_to_delete = kwargs.get('apps', ['microsite_configuration'])
+
     def __call__(self):
-        query_string = """DELETE FROM south_migrationhistory WHERE app_name = %s"""
-        query_result = self.cnx.execute(query_string, ('microsite_configuration',), dry_run=self.dry_run)
+        query_string = """DELETE FROM {table_name} WHERE {column_name} in %s""".format(
+            table_name=self.table_name,
+            column_name=self.column_name,
+        )
+        query_result = self.cnx.execute(query_string, (self.apps_to_delete,), dry_run=self.dry_run)
         return query_result
 
     def __unicode__(self):
