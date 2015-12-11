@@ -6,16 +6,113 @@ import logging
 # Settings for the operations module
 
 FORCED_ERODE = {
-    'auth_user': {'Erode': {'uses': 'user_list', 'column_name': 'id'}},
-    'south_migrationhistory': {'ErodeSouthMigration': {}},
-    'course_groups_coursecohort': {'ErodeByParent': {'column_name': 'course_id', 'parent': 'to_be_determined', 'uses': 'course_list'}},
-    'courseware_studentmodulehistory': {'ErodeByParent': {'column_name': 'user_id', 'parent': 'to_be_determined', 'uses': 'user_list'}},
-    'courseware_xmodulestudentinfofield': {'Erode': {'uses': 'user_list', 'column_name': 'student_id'}},
-    'courseware_xmodulestudentprefsfield': {'Erode': {'uses': 'user_list', 'column_name': 'student_id'}},
-    'workflow_assessmentworkflowstep': {'ErodeByParent': {'column_name': 'course_id', 'parent': 'workflow_assessmentworkflow', 'uses': 'course_list'}},
-    'django_comment_client_permission_roles': {'ErodeByParent': {'column_name': 'course_id', 'parent': 'django_comment_client_role', 'uses': 'course_list'}},
-    'student_manualenrollmentaudit': {'ErodeByParent': {'column_name': 'user_id', 'parent': 'student_courseenrollment', 'uses': 'user_list'}},   # Some data might be lost when the initial state was unenrolled
-    'submissions_scoresummary': {'ErodeByParent': {'column_name': 'course_id', 'parent': 'submissions_studentitem', 'uses': 'course_list'}},
+    'auth_user': {
+        'Erode': {
+            'uses': 'user_list',
+            'column_name': 'id',
+            'priority': 5,
+        }
+    },
+    'south_migrationhistory': {'ErodeByAppName': {'column_name': 'app_name'}},
+    'course_groups_coursecohort': {
+        'ErodeByParent': {
+            'column_name': 'course_id',
+            'uses': 'course_list',
+            'parent': 'course_groups_courseusergroup',
+            'child_id': 'course_user_group_id',
+        }
+    },
+    'courseware_studentmodulehistory': {
+        'ErodeByParent': {
+            'column_name': 'student_id',
+            'uses': 'user_list',
+            'parent': 'courseware_studentmodule',
+            'child_id': 'student_module_id',
+        }
+    },
+    'courseware_xmodulestudentinfofield': {
+        'Erode': {
+            'uses': 'user_list',
+            'column_name': 'student_id',
+        }
+    },
+    'courseware_xmodulestudentprefsfield': {
+        'Erode': {
+            'uses': 'user_list',
+            'column_name': 'student_id',
+        }
+    },
+    'workflow_assessmentworkflowstep': {
+        'ErodeByParent': {
+            'column_name': 'course_id',
+            'uses': 'course_list',
+            'parent': 'workflow_assessmentworkflow',
+            'child_id': 'workflow_id',
+        }
+    },
+    'django_comment_client_permission_roles': {
+        'ErodeByParent': {
+            'column_name': 'course_id',
+            'uses': 'course_list',
+            'parent': 'django_comment_client_role',
+            'child_id': 'role_id',
+        }
+    },
+    'student_manualenrollmentaudit': {
+        'Erode': {
+            'uses': 'user_list',
+            'column_name': 'enrolled_by_id',
+        }
+    },
+    'submissions_score': {
+        'ErodeByParent': {
+            'column_name': 'course_id',
+            'parent': 'submissions_studentitem',
+            'uses': 'course_list',
+            'child_id': 'student_item_id',
+        }
+    },
+    'submissions_scoresummary': {
+        'ErodeByParent': {
+            'column_name': 'course_id',
+            'parent': 'submissions_studentitem',
+            'uses': 'course_list',
+            'child_id': 'student_item_id',
+        }
+    },
+    'submissions_submission': {
+        'ErodeByParent': {
+            'column_name': 'course_id',
+            'parent': 'submissions_studentitem',
+            'uses': 'course_list',
+            'child_id': 'student_item_id',
+        }
+    },
+    'student_languageproficiency': {
+        'ErodeByParent': {
+            'column_name': 'user_id',
+            'parent': 'auth_userprofile',
+            'uses': 'user_list',
+            'child_id': 'user_profile_id',
+        }
+    },
+    'django_content_type': {'ErodeByAppName': {'column_name': 'app_label'}},
+    'auth_group': {
+        'ErodeByParent': {
+            'column_name': 'user_id',
+            'parent': 'auth_user_groups',
+            'uses': 'user_list',
+            'parent_id': 'group_id',
+        }
+    },
+    'auth_permission': {
+        'ErodeByParent': {
+            'column_name': 'user_id',
+            'parent': 'auth_user_user_permissions',
+            'uses': 'user_list',
+            'parent_id': 'permission_id',
+        }
+    },
 }
 FORCED_TRUNCATE = [
     '^third_party_auth_oauth2providerconfig$',
@@ -33,6 +130,11 @@ FORCED_TRUNCATE = [
 FORCED_NOOP = [
     '^embargo_country$',
     '^certificates_badgeimageconfiguration$',
+    '^django_comment_client_permission$',
+    '^django_site$',
+    '^milestones_milestonerelationshiptype$',  # Almost emtpy, looks like it was autogenerated after cypress
+    '^notify_notificationtype$',  # Almost emtpy, looks like it depends on the wiki
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***

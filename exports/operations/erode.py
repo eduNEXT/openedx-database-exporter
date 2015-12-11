@@ -13,10 +13,11 @@ class Erode(Operation):
     """
     LIST_OF_USERS = 'user_list'
     LIST_OF_COURSES = 'course_list'
+    color = "\033[34m"
+    priority = 40
 
     def __init__(self, *args, **kwargs):
         super(Erode, self).__init__(*args, **kwargs)
-        self.color = "\033[34m"
         self.column_name = kwargs.get('column_name')
         self.uses = kwargs.get('uses')
         if kwargs.get('eroder_list', False):
@@ -73,14 +74,80 @@ class Erode(Operation):
                 if row.get('COLUMN_NAME') == 'user_id':
                     target.append(Erode(uses=cls.LIST_OF_USERS, cnx=cnx, table_name=table_name, column_name='user_id'))
 
-                # TODO: we should filter better whether a user_id column_name really is what it shoudl be. E.g. to be foreing_key
-                if row.get('COLUMN_NAME') == 'user_profile_id':
-                    target.append(Operation(name='erode_by_user_profile_id', cnx=cnx, table_name=table_name))
-
         return target
 
     def __unicode__(self):
         return u"<Operation: {}{} by {}\033[00m> on Table: {}".format(self.color, self.get_name(), self.column_name, self.table_name)
+
+
+class ErodeByParent(Erode):
+    """
+    """
+    priority = 50
+
+    def __init__(self, *args, **kwargs):
+        super(Erode, self).__init__(*args, **kwargs)
+
+        self.column_name = kwargs.get('column_name')
+        self.uses = kwargs.get('uses')
+        self.parent = kwargs.get('parent')
+
+        self.child_id = kwargs.get('child_id', 'id')
+        self.parent_id = kwargs.get('parent_id', 'id')
+
+        # This is probably empty
+        self.eroder_list = kwargs.get('eroder_list')
+
+        if self.child_id == self.parent_id == 'id':
+            raise Exception("""Eroding with both parent and child ids as 'id' is not really cool.
+                Check your configuration for table {}""".format(self.table_name))
+
+    def __call__(self):
+
+        prepared_query = """DELETE
+        FROM {table_name}
+        WHERE {child_id} IN (
+            SELECT {parent_id}
+            from {parent_table}
+            where {column_name} not in %s
+        )""".format(
+            table_name=self.table_name,
+            child_id=self.child_id,
+            parent_id=self.parent_id,
+            parent_table=self.parent,
+            column_name=self.column_name,
+        )
+
+        self.fill_eroder_list()
+        query_result = self.cnx.execute(prepared_query, (self.eroder_list,), dry_run=self.dry_run)
+        return query_result
+
+    def __unicode__(self):
+        return u"<Operation: {}{} by {}\033[00m> on Table: {}".format(
+            self.color, self.get_name(), self.column_name, self.table_name
+        )
+
+
+class ErodeByAppName(Erode):
+    """
+    This is a fixed migration to remove the rows on the south_migrationhistory table
+    that belong to our internal operation
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(ErodeByAppName, self).__init__(*args, **kwargs)
+        self.apps_to_delete = kwargs.get('apps', ['microsite_configuration'])
+
+    def __call__(self):
+        query_string = """DELETE FROM {table_name} WHERE {column_name} in %s""".format(
+            table_name=self.table_name,
+            column_name=self.column_name,
+        )
+        query_result = self.cnx.execute(query_string, (self.apps_to_delete,), dry_run=self.dry_run)
+        return query_result
+
+    def __unicode__(self):
+        return u"<Operation: {}{}\033[00m>".format(self.color, self.get_name())
 
 
 class ErodeHelper():
@@ -95,6 +162,7 @@ class ErodeHelper():
     def get_users_list(cnx):
         if not ErodeHelper.users_list:
             ErodeHelper.users_list = user_list.get_users_list(cnx, ErodeHelper.host_name, ErodeHelper.org_list_users)
+            ErodeHelper.users_list.sort()
         return ErodeHelper.users_list
 
     @staticmethod

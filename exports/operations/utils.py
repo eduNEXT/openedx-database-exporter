@@ -31,9 +31,18 @@ def add_operations(op1, op2):
     # FIXME, this is not solid enough
     if isinstance(op2, Drop):
         return op2
+    if isinstance(op1, Drop):
+        return op1
+
+    if isinstance(op2, Noop):
+        return op2
+    if isinstance(op1, Noop):
+        return op1
 
     if isinstance(op2, Truncate):
         return op2
+    if isinstance(op1, Truncate):
+        return op1
 
     # We cant reduce other operations
     if isinstance(op1, tuple):
