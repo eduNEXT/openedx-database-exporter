@@ -3,6 +3,7 @@
 
 import settings
 import logging
+import operator
 from databases.mysql import Connection
 from operations.base import OperationError
 import operations.utils as utils
@@ -31,6 +32,9 @@ def main():
     # Sort and execute
     print "Executing Operations"
     cnx.execute("SET FOREIGN_KEY_CHECKS=0", dry_run=settings.GLOBAL_DRY_RUN)
+
+    all_ops.sort(key=operator.attrgetter('priority'), reverse=True)
+
     for op in all_ops:
         print op
         print "result: {}".format(op())
