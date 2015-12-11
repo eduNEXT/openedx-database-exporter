@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import logging
 from .. import settings
+
+logger = logging.getLogger(__name__)
 
 
 class Operation(object):
@@ -29,7 +32,7 @@ class Operation(object):
             raise Exception('The operation requires a connection')
 
     def __call__(self):
-        print "executing: {}".format(self.get_name())
+        logger.info("executing: {}".format(self.get_name()))
 
     def __unicode__(self):
         return u"<Operation: {}{}\033[00m> on Table: {}".format(self.color, self.get_name(), self.table_name)

@@ -27,17 +27,16 @@ def main():
                 all_ops.append(operation)
 
         except OperationError, e:
-            print "A Table lacks operations: \033[91m{}\033[00m".format(e.msg)
+            logger.error("A Table lacks operations: \033[91m{}\033[00m".format(e.msg))
 
     # Sort and execute
-    print "Executing Operations"
+    logger.info("Executing Operations")
     cnx.execute("SET FOREIGN_KEY_CHECKS=0", dry_run=settings.GLOBAL_DRY_RUN)
 
     all_ops.sort(key=operator.attrgetter('priority'), reverse=True)
 
     for op in all_ops:
-        print op
-        print "result: {}".format(op())
+        logger.info("{} => result: {}".format(op, op()))
     cnx.execute("SET FOREIGN_KEY_CHECKS=1", dry_run=settings.GLOBAL_DRY_RUN)
 
     logger.info("Closing connection to DB")
