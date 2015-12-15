@@ -5,6 +5,7 @@ import settings
 import logging
 import operator
 from databases.mysql import Connection
+from databases.mongo import Connection as MongoConnection
 from operations.base import OperationError
 import operations.utils as utils
 
@@ -12,6 +13,18 @@ logger = logging.getLogger(__name__)
 
 
 def main():
+    mongo_process()
+
+
+def mongo_process():
+    course_list = ["Scarchivistas/SGDISO/2014", "Urosario/GSIT/2014"]
+    user_list = []
+    cnx = MongoConnection()
+    contents = cnx.find(cnx.query_builder_in("course_id", course_list), "contents")
+    print contents
+
+
+def mysql_process():
     """
     Entry point for our application
     """

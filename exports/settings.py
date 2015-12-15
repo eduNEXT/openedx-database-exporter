@@ -156,6 +156,13 @@ DB_USER = "root"
 DB_PASSWD = ""
 DB_HOST = "localhost"
 
+MONGO_DATABASE = "cs_comments_service"
+MONGO_PORT = 21017
+MONGO_USER = ""
+MONGO_PASSWD = ""
+MONGO_HOST = "localhost"
+
+
 try:
     from .private import *      # pylint: disable=import-error
 except ImportError:
