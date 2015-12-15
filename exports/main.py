@@ -8,28 +8,41 @@ from databases.mysql import Connection
 from databases.mongo import Connection as MongoConnection
 from operations.base import OperationError
 import operations.utils as utils
+from operations.erode import ErodeHelper
 
 logger = logging.getLogger(__name__)
 
 
 def main():
-    mongo_process()
+    cnx = Connection(dict_cursor=True)
+    # mysql_process(cnx)
+    course_list = ErodeHelper.get_users_list(cnx)#["Scarchivistas/SGDISO/2014", "Urosario/GSIT/2014"]
+    user_list = ErodeHelper.get_courses_list(cnx)
+    mongo_process(course_list, user_list)
 
 
-def mongo_process():
-    course_list = ["Scarchivistas/SGDISO/2014", "Urosario/GSIT/2014"]
-    user_list = []
+def mongo_process(course_list, user_list):
+
     cnx = MongoConnection()
-    contents = cnx.find(cnx.query_builder_in("course_id", course_list), "contents")
-    print contents
+    result = cnx.remove(cnx.query_builder_in("course_id", course_list), "contents")
+    print result
+
+    result = cnx.remove(cnx.query_builder_in("author_id", user_list), "contents")
+    print result
+
+    result = cnx.remove(cnx.query_builder_in("subscriber_id", user_list), "subscriptions")
+    print result
+
+    result = cnx.remove(cnx.query_builder_in("external_id", user_list), "users")
+    print result
 
 
-def mysql_process():
+def mysql_process(cnx):
     """
     Entry point for our application
     """
     logger.info("Setting up connection to {}@{}".format(settings.DB_DATABASE, settings.DB_HOST))
-    cnx = Connection(dict_cursor=True)
+   
 
     dry_run = settings.GLOBAL_DRY_RUN
 
