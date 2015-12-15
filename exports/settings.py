@@ -157,7 +157,7 @@ DB_PASSWD = ""
 DB_HOST = "localhost"
 
 MONGO_DATABASE = "cs_comments_service"
-MONGO_PORT = 21017
+MONGO_PORT = "27017"
 MONGO_USER = ""
 MONGO_PASSWD = ""
 MONGO_HOST = "localhost"

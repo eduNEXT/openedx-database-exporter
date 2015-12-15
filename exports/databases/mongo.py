@@ -23,7 +23,7 @@ class Connection(object):
         self._host = host
         self._db = db
         self._port = port
-        self._client = MongoClient("mongodb://{}:{}".format("192.168.0.185", "27017"))
+        self._client = MongoClient("mongodb://{}:{}".format(host, port))
 
     def find(self, query, collection, dataset=None, dry_run=False):
         if dataset is None:
