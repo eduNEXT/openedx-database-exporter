@@ -16,8 +16,8 @@ logger = logging.getLogger(__name__)
 def main():
     cnx = Connection(dict_cursor=True)
     # mysql_process(cnx)
-    course_list = ErodeHelper.get_users_list(cnx)#["Scarchivistas/SGDISO/2014", "Urosario/GSIT/2014"]
-    user_list = ErodeHelper.get_courses_list(cnx)
+    course_list = ErodeHelper.get_courses_list(cnx)#["Scarchivistas/SGDISO/2014", "Urosario/GSIT/2014"]
+    user_list = ErodeHelper.get_users_list(cnx)
     mongo_process(course_list, user_list)
 
 
@@ -25,6 +25,7 @@ def mongo_process(course_list, user_list):
 
     cnx = MongoConnection()
     result = cnx.remove(cnx.query_builder_in("course_id", course_list), "contents")
+    # result = cnx.find(cnx.query_builder_in("course_id", course_list), "contents")
     print result
 
     result = cnx.remove(cnx.query_builder_in("author_id", user_list), "contents")
