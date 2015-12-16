@@ -45,7 +45,7 @@ class Connection(object):
         cursor = db[collection].delete_many(query)
         return cursor.raw_result
 
-    def query_builder_in(self, field_key, field_list, negate=True):
+    def query_builder_in(self, field_key, field_list, negate=False):
         if negate:
             query = {field_key: {"$not": {"$in": field_list}}}
         else:
