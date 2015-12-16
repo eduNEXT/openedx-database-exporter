@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import logging
 from .. import settings
-
 from .erode import ErodeHelper
+
+logger = logging.getLogger(__name__)
 
 
 def cs_comments_service_erode(cnx, mysql_cnx=None):
@@ -14,14 +16,14 @@ def cs_comments_service_erode(cnx, mysql_cnx=None):
 
     # 1st collection
     result = cnx.remove(cnx.query_builder_in("course_id", course_list, negate=True), "contents")
-    print result
+    logger.info("Collection contents by course_id result:{}".format(result))
     result = cnx.remove(cnx.query_builder_in("author_id", user_id_str, negate=True), "contents")
-    print result
+    logger.info("Collection contents by author_id result:{}".format(result))
 
     # 2nd collection
     result = cnx.remove(cnx.query_builder_in("subscriber_id", user_id_str, negate=True), "subscriptions")
-    print result
+    logger.info("Collection subscriptions by course_id result:{}".format(result))
 
     # 3rd collection
     result = cnx.remove(cnx.query_builder_in("external_id", user_id_str, negate=True), "users")
-    print result
+    logger.info("Collection users by external_id result:{}".format(result))
