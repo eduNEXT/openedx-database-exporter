@@ -4,19 +4,28 @@
 import settings
 import logging
 import operator
-from databases.mysql import Connection
+from databases.mysql import Connection as MysqlConnection
+from databases.mongo import Connection as MongoConnection
 from operations.base import OperationError
+from operations.mongo import cs_comments_service_erode
 import operations.utils as utils
 
 logger = logging.getLogger(__name__)
 
 
 def main():
+    mysql_cnx = MysqlConnection(dict_cursor=True)
+    mongo_cnx = MongoConnection()
+
+    # mysql_process(mysql_cnx)
+    cs_comments_service_erode(mongo_cnx, mysql_cnx)
+
+
+def mysql_process(cnx):
     """
     Entry point for our application
     """
     logger.info("Setting up connection to {}@{}".format(settings.DB_DATABASE, settings.DB_HOST))
-    cnx = Connection(dict_cursor=True)
 
     dry_run = settings.GLOBAL_DRY_RUN
 
