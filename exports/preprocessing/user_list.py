@@ -18,6 +18,7 @@ Total users of a microsite= Users of only this microsite U Empty users recoverab
 
 from tools import *
 import logging
+from .. import settings
 
 logger = logging.getLogger(__name__)
 
@@ -109,5 +110,6 @@ def get_users_list(cnx, site, org_list):
     EnS = get_empty_users_recoverable(cnx, site)
     PminusN = get_site_only_users(cnx, org_list)
     users = EnS + PminusN
+    users = users + settings.MICROSITE_HANDPICKED_USERS_ID
     logger.debug("users: There are {} users for {} with orgs:{}".format(len(users), site, org_list))
     return users
