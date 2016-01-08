@@ -22,14 +22,24 @@ FORCED_ERODE = {
             'child_id': 'course_user_group_id',
         }
     },
-    'courseware_studentmodulehistory': {
-        'ErodeByParent': {
-            'column_name': 'student_id',
-            'uses': 'user_list',
-            'parent': 'courseware_studentmodule',
-            'child_id': 'student_module_id',
+    'courseware_studentmodulehistory': [
+        {
+            'ErodeByParent': {
+                'column_name': 'course_id',
+                'uses': 'course_list',
+                'parent': 'courseware_studentmodule',
+                'child_id': 'student_module_id',
+            }
+        },
+        {
+            'ErodeByParent': {
+                'column_name': 'student_id',
+                'uses': 'user_list',
+                'parent': 'courseware_studentmodule',
+                'child_id': 'student_module_id',
+            }
         }
-    },
+    ],
     'courseware_xmodulestudentinfofield': {
         'Erode': {
             'uses': 'user_list',
@@ -147,7 +157,7 @@ GLOBAL_DRY_RUN = False
 MICROSITE_HOSTNAME = "***REMOVED***"
 MICROSITE_ORGS_4_USERS = [***REMOVED***]
 MICROSITE_ORGS_4_COURSES = [***REMOVED***]
-
+MICROSITE_HANDPICKED_USERS_ID = [***REMOVED***]
 
 # Settings for the databases module
 

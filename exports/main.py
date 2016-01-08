@@ -17,7 +17,7 @@ def main():
     mysql_cnx = MysqlConnection(dict_cursor=True)
     mongo_cnx = MongoConnection()
 
-    # mysql_process(mysql_cnx)
+    mysql_process(mysql_cnx)
     cs_comments_service_erode(mongo_cnx, mysql_cnx)
 
 
@@ -48,6 +48,7 @@ def mysql_process(cnx):
 
     for op in all_ops:
         logger.info("{} => result: {}".format(op, op()))
+        # logger.info("{} => result: {}".format(op, op))
 
     if not dry_run:
         cnx._connection.commit()

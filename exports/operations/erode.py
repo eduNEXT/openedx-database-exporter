@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from itertools import chain
+
 from .. import settings
 from ..preprocessing import user_list
 from ..preprocessing import course_list
@@ -48,7 +50,19 @@ class Erode(Operation):
         settings.FORCED_ERODE
         if table_name in settings.FORCED_ERODE.keys():
             obj = settings.FORCED_ERODE.get(table_name)
-            for classname, extras in obj.iteritems():
+
+            if isinstance(obj, list):
+                # Join a list of dicts to support the same operation more than once
+                iteritems = []
+                for item in obj:
+                    iteritems.append(item.iteritems())
+
+                iterator = chain.from_iterable(iteritems)
+            else:
+                # Regular iterator with only one dict
+                iterator = obj.iteritems()
+
+            for classname, extras in iterator:
                 try:
                     op = globals()[classname]
                     target.append(op(cnx=cnx, table_name=table_name, **extras))
